@@ -64,193 +64,33 @@ ll C(ll n, ll k) {
 
 int dr[4] = {0, 1, 0, -1};
 int dc[4] = {1, 0, -1, 0};
-const int N = 1e3+3;
+const int N = 3e5+3;
 // const int M = 1e5+5;
 
 ll n, m, D, P;
-struct dev {
-    int comp;
-    ll bonus;
-    vector<int> skills; 
+struct dem {
+    ll sc, tr, sr, na;
+    vector<ll> a;
 };
-struct pm {
-    int comp;
-    ll bonus;
-};
-map<string, int> compid;
-int cid=0, sid=0;
-vector<string> revcompid;
-map<string, int> skillid;
-vector<string> revskillid;
-int a[N][N], vis[N][N];
-struct dev devs[101010];
-vector<pair<struct dev, int> > devsort;
-vector<pair<struct pm, int> > pmsort;
-struct pm pms[20202];
-
-// bool compdevs(struct dev &d1, struct dev &d2) {
-//   return d1.bonus > d2.bonus;
-// }
-bool compdevs(pair<struct dev, int> &d1, pair<struct dev, int> &d2) {
-	if(d1.first.comp != d2.first.comp) return d1.first.comp > d2.first.comp;
-  if(d1.first.bonus != d2.first.bonus) return d1.first.bonus > d2.first.bonus;
-  return d1.first.skills.size() > d2.first.skills.size();
-}
-// bool comppms(struct pm &p1, struct pm &p2) {
-//   return p1.bonus > p2.bonus;
-// }
-bool comppms(pair<struct pm, int> &d1, pair<struct pm, int> &d2) {
-	if(d1.first.comp != d2.first.comp) return d1.first.comp > d2.first.comp;
-  return d1.first.bonus > d2.first.bonus;
-}
-
-bool chk(int i, int j) {
-	return i < n and i >= 0 and j < m and j >= 0;
-}
-vector<pair<int, int> > devspots, pmspots;
-
-void dfsdev(int i, int j) {
-	if(a[i][j] < 1) return;
-	if(vis[i][j]) return;
-	vis[i][j] = 1;
-	devspots.pb({i, j});
-	fo(k, 4) {
-		int x = i + dr[k], y = j + dc[k];
-		if(!chk(x,y)) continue;
-		dfsdev(x,y);
-	}
-}
-void dfspm(int i, int j) {
-	if(a[i][j] > -1) return;
-	if(vis[i][j]) return;
-	vis[i][j] = 1;
-	pmspots.pb({i, j});
-	fo(k, 4) {
-		int x = i + dr[k], y = j + dc[k];
-		if(!chk(x,y)) continue;
-		dfspm(x,y);
-	}
-}
-
+ll s, smx, t, d;
+struct dem dems[N];
 void go1() {
-    revcompid.pb("");
-    revskillid.pb("");
-    cin >> m >> n;
-    fo(i,n) {
-        string s; cin >> s;
-        fo(j,m) {
-            if(s[j] == '#') a[i][j] = 0;
-            else if(s[j] == '_') a[i][j] = 1;
-            else a[i][j] = -1;
+    cin >> s >> smx >> t >> d;
+    fo(i,d) {
+        ll sc, tr, sr, na;cin >> sc >> tr >> sr >> na;
+        vector<ll> a(na);
+        fo(j, na) {
+            cin >> a[i];
         }
-    }
-    cin >> D;
-    fo(i,D) {
-        string s;cin >> s;
-        if(!compid[s]) {
-            compid[s] = ++cid;
-            revcompid.pb(s);
-        }
-        struct dev de;
-        de.comp = compid[s];
-        ll bon;cin >> bon;
-        ll noofskills;cin >> noofskills;
-        vector<int> sks(noofskills);
-        fo(j, noofskills) {
-            string sk;cin >> sk;
-            if(!skillid[sk]) {
-                skillid[sk] = ++sid;
-                revskillid.pb(sk);
-            }
-            sks.pb(skillid[sk]);
-        }
-        de.skills = sks;
-        de.bonus = bon;
-        devs[i] = de;
-    }
-    cin >> P;
-    fo(i,P) {
-        string s;cin >> s;
-        if(!compid[s]) {
-            compid[s] = ++cid;
-            revcompid.pb(s);
-        }
-        struct pm pmm;
-        pmm.comp = compid[s];
-        ll bon;cin >> bon;
-        pmm.bonus = bon;
-        pms[i] = pmm;
-    }
-    cerr << "took input\n";
-    // fo(i,n) {
-    //     fo(j,m) {
-    //         if(a[i][j] == 1) {
-    //             devspots.pb({i,j});
-    //         } else if(a[i][j] == -1) {
-    //             pmspots.pb({i,j});
-    //         }
-    //     }
-    // }
-
-		fo(i,n) fo(j,m) vis[i][j] = 0;
-		fo(i,n) fo(j,m) if(!vis[i][j]) dfsdev(i,j);
-		fo(i,n) fo(j,m) vis[i][j] = 0;
-		fo(i,n) fo(j,m) if(!vis[i][j]) dfspm(i,j);
-    cerr << D << " " << P << ln;
-
-		int ds = devspots.size();
-    int ps = pmspots.size();
-
-		cerr << ds << " " << ps << ln;
-
-    fo(i, D) devsort.pb( {devs[i], i});
-    fo(i, P) pmsort.pb ({pms[i], i});
-
-    // sort(all(pmsort), comppms);
-    sort(all(devsort), compdevs);
-    sort(all(pmsort), comppms);
-    // fo(i, D) {
-    //     cerr << devsort[i].first.bonus << " ";
-    // }
-    
-
-    vector<pair<int, int> > dev_out(D, {-1, -1}), pm_out(P, {-1, -1});
-    fo(i, ds) {
-        if(i >= D) break;
-        dev_out[devsort[i].second] = devspots[i];
-    }
-    fo(i, ps) {
-        if(i >= P) break;
-        pm_out[pmsort[i].second] = pmspots[i];
+        struct dem dm;
+        dm.a = a;
+        dm.na = na;
+        dm.sc = sc;
+        dm.tr = tr;
+        dm.sr = sr;
+        dems[i] = dm;
     }
 
-    fo(i, D) {
-        if(dev_out[i].first < 0) cout << "X\n";
-        else {
-            cout << dev_out[i].second << " " << dev_out[i].first << ln;
-        }
-    }
-    fo(i, P) {
-        if(pm_out[i].first < 0) cout << "X\n";
-        else {
-            cout << pm_out[i].second << " " << pm_out[i].first << ln;
-        }
-    }
-
-    // fo(i, min(D, (ll)devspots.size())) {
-    //     auto u = devspots[i];
-    //     cout << u.second << " " << u.first << ln;
-    // }
-    // fosn(i, min(D, (ll)devspots.size()), D) {
-    //     cout << "X\n";
-    // }
-    // fo(i, min(P, (ll)pmspots.size())) {
-    //     auto u = pmspots[i];
-    //     cout << u.second << " " << u.first << ln;
-    // }
-    // fosn(i, min(P, (ll)pmspots.size()), P) {
-    //     cout << "X\n";
-    // }
 }
 int main(){   
 
@@ -262,6 +102,7 @@ int main(){
     // freopen("e_igloos.txt", "r", stdin);
     // freopen("f_glitch.txt", "r", stdin);
     // freopen("out.txt", "w", stdout);
+
     // cout << fixed << setprecision(25);
     int t=1;
     // cin>>t;
