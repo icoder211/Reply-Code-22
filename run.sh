@@ -1,13 +1,13 @@
-g++ b.cpp -o a.out
-./a.out < 00.txt > 0
+
+./a.out < 00.txt > a0.txt
 echo 0 done
-./a.out < 01.txt > 1
+./a.out < 01.txt > a1.txt
 echo 1 done
-./a.out < 02.txt > 2
+./a.out < 02.txt > a2.txt
 echo 2 done
-./a.out < 03.txt > 3
+./a.out < 03.txt > a3.txt
 echo 3 done
-./a.out < 04.txt > 4
+./a.out < 04.txt > a4.txt
 echo 4 done
-./a.out < 05.txt > 5
+./a.out < 05.txt > a5.txt
 echo 5 done
