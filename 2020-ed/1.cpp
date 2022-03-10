@@ -82,7 +82,7 @@ int cid=0, sid=0;
 vector<string> revcompid;
 map<string, int> skillid;
 vector<string> revskillid;
-int a[N][N];
+int a[N][N], vis[N][N];
 struct dev devs[101010];
 vector<pair<struct dev, int> > devsort;
 vector<pair<struct pm, int> > pmsort;
@@ -92,11 +92,44 @@ struct pm pms[20202];
 //   return d1.bonus > d2.bonus;
 // }
 bool compdevs(pair<struct dev, int> &d1, pair<struct dev, int> &d2) {
+	if(d1.first.comp != d2.first.comp) return d1.first.comp > d2.first.comp;
   if(d1.first.bonus != d2.first.bonus) return d1.first.bonus > d2.first.bonus;
   return d1.first.skills.size() > d2.first.skills.size();
 }
-bool comppms(struct pm &p1, struct pm &p2) {
-  return p1.bonus > p2.bonus;
+// bool comppms(struct pm &p1, struct pm &p2) {
+//   return p1.bonus > p2.bonus;
+// }
+bool comppms(pair<struct pm, int> &d1, pair<struct pm, int> &d2) {
+	if(d1.first.comp != d2.first.comp) return d1.first.comp > d2.first.comp;
+  return d1.first.bonus > d2.first.bonus;
+}
+
+bool chk(int i, int j) {
+	return i < n and i >= 0 and j < m and j >= 0;
+}
+vector<pair<int, int> > devspots, pmspots;
+
+void dfsdev(int i, int j) {
+	if(a[i][j] < 1) return;
+	if(vis[i][j]) return;
+	vis[i][j] = 1;
+	devspots.pb({i, j});
+	fo(k, 4) {
+		int x = i + dr[k], y = j + dc[k];
+		if(!chk(x,y)) continue;
+		dfsdev(x,y);
+	}
+}
+void dfspm(int i, int j) {
+	if(a[i][j] > -1) return;
+	if(vis[i][j]) return;
+	vis[i][j] = 1;
+	pmspots.pb({i, j});
+	fo(k, 4) {
+		int x = i + dr[k], y = j + dc[k];
+		if(!chk(x,y)) continue;
+		dfspm(x,y);
+	}
 }
 
 void go1() {
@@ -149,30 +182,36 @@ void go1() {
         pms[i] = pmm;
     }
     cerr << "took input\n";
-    vector<pair<int, int> > devspots, pmspots;
-    fo(i,n) {
-        fo(j,m) {
-            if(a[i][j] == 1) {
-                devspots.pb({i,j});
-            } else if(a[i][j] == -1) {
-                pmspots.pb({i,j});
-            }
-        }
-    }
-    int ds = devspots.size();
-    int ps = pmspots.size();
+    // fo(i,n) {
+    //     fo(j,m) {
+    //         if(a[i][j] == 1) {
+    //             devspots.pb({i,j});
+    //         } else if(a[i][j] == -1) {
+    //             pmspots.pb({i,j});
+    //         }
+    //     }
+    // }
+
+		fo(i,n) fo(j,m) vis[i][j] = 0;
+		fo(i,n) fo(j,m) if(!vis[i][j]) dfsdev(i,j);
+		fo(i,n) fo(j,m) vis[i][j] = 0;
+		fo(i,n) fo(j,m) if(!vis[i][j]) dfspm(i,j);
     cerr << D << " " << P << ln;
-    // random_shuffle(all(devspots));
-    // random_shuffle(all(pmspots));
+
+		int ds = devspots.size();
+    int ps = pmspots.size();
+
+		cerr << ds << " " << ps << ln;
 
     fo(i, D) devsort.pb( {devs[i], i});
     fo(i, P) pmsort.pb ({pms[i], i});
 
     // sort(all(pmsort), comppms);
     sort(all(devsort), compdevs);
-    fo(i, D) {
-        cerr << devsort[i].first.bonus << " ";
-    }
+    sort(all(pmsort), comppms);
+    // fo(i, D) {
+    //     cerr << devsort[i].first.bonus << " ";
+    // }
     
 
     vector<pair<int, int> > dev_out(D, {-1, -1}), pm_out(P, {-1, -1});
@@ -219,10 +258,10 @@ int main(){
     // freopen("a_solar.txt", "r", stdin);
     // freopen("b_dream.txt", "r", stdin);
     // freopen("c_soup.txt", "r", stdin);
-    freopen("d_maelstrom.txt", "r", stdin);
+    // freopen("d_maelstrom.txt", "r", stdin);
     // freopen("e_igloos.txt", "r", stdin);
     // freopen("f_glitch.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
+    // freopen("out.txt", "w", stdout);
     // cout << fixed << setprecision(25);
     int t=1;
     // cin>>t;
