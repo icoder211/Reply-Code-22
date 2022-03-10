@@ -74,8 +74,10 @@ struct dem {
 };
 ll s, smx, t, d;
 struct dem dems[N];
+vector<int> ans;
 void go1() {
     cin >> s >> smx >> t >> d;
+    ans.assign(d,-1);
     fo(i,d) {
         ll sc, tr, sr, na;cin >> sc >> tr >> sr >> na;
         vector<ll> a(na);
@@ -91,17 +93,21 @@ void go1() {
         dems[i] = dm;
     }
 
+    fo(i,d) ans[i] = i;
+    random_shuffle(all(ans));
+    fo(i,d) cout << ans[i] << " ";
+    cout << ln;
 }
 int main(){   
 
     Nos;
-    // freopen("a_solar.txt", "r", stdin);
+    // freopen("00.txt", "r", stdin);
     // freopen("b_dream.txt", "r", stdin);
-    // freopen("c_soup.txt", "r", stdin);
+    freopen("03.txt", "r", stdin);
     // freopen("d_maelstrom.txt", "r", stdin);
     // freopen("e_igloos.txt", "r", stdin);
     // freopen("f_glitch.txt", "r", stdin);
-    // freopen("out.txt", "w", stdout);
+    freopen("out.txt", "w", stdout);
 
     // cout << fixed << setprecision(25);
     int t=1;
