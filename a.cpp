@@ -64,13 +64,14 @@ ll C(ll n, ll k) {
 
 int dr[4] = {0, 1, 0, -1};
 int dc[4] = {1, 0, -1, 0};
-const int N = 3e5+3;
+const int N = 5e5+3;
 // const int M = 1e5+5;
 
 ll n, m, D, P;
 struct dem {
     ll sc, tr, sr, na;
     vector<ll> a;
+    dem(){}
 };
 ll s, smx, t, d;
 struct dem dems[N];
@@ -82,7 +83,7 @@ void go1() {
         ll sc, tr, sr, na;cin >> sc >> tr >> sr >> na;
         vector<ll> a(na);
         fo(j, na) {
-            cin >> a[i];
+            cin >> a[j];
         }
         struct dem dm;
         dm.a = a;
@@ -95,19 +96,18 @@ void go1() {
 
     fo(i,d) ans[i] = i;
     random_shuffle(all(ans));
-    fo(i,d) cout << ans[i] << " ";
-    cout << ln;
+    fo(i,min(d, t) ) cout << ans[i] << ln;
 }
 int main(){   
 
     Nos;
     // freopen("00.txt", "r", stdin);
     // freopen("b_dream.txt", "r", stdin);
-    freopen("03.txt", "r", stdin);
+    // freopen("03.txt", "r", stdin);
     // freopen("d_maelstrom.txt", "r", stdin);
     // freopen("e_igloos.txt", "r", stdin);
     // freopen("f_glitch.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
+    // freopen("out.txt", "w", stdout);
 
     // cout << fixed << setprecision(25);
     int t=1;
