@@ -77,7 +77,7 @@ ll s, smx, t, d;
 struct dem dems[N];
 vector<int> ans;
 bool cmpdems(int &i, int &j) {
-    return dems[i].sr - dems[i].sc - dems[i].tr > dems[j].sr - dems[j].sc - dems[j].tr;
+    return dems[i].sr - dems[i].sc > dems[j].sr - dems[j].sc;
     // return d1.sr - d1.sc > d2.sr - d2.sc;
 }
 
@@ -101,8 +101,45 @@ void go1() {
 
     fo(i,d) ans[i] = i;
     sort(all(ans), cmpdems);
+    ll scur = s;
+    set<pair<ll, ll> > s;
+    vector<int> res;
+    vector<int> diff(t, 0);
+    int demj = 0;
+    fo(i, t) {
+        scur += diff[i];
+        if(!s.empty() and scur >= (*s.begin()).first ) {
+            int y = (*s.begin()).second;
+            res.pb(y);
+            if(i + dems[y].tr < t) diff[i+dems[y].tr];
+            scur -= dems[y].sc;
+            s.erase(s.begin());
+            continue;
+        }
+        while(demj < d) {
+            int u = ans[demj];
+            if(dems[u].na == 0) {
+                demj++;
+                s.insert({1e14, u});
+                continue;
+            }
+            if(scur >= dems[u].sc) {
+                scur -= dems[u].sc;
+                res.pb(u);
+                if(i + dems[u].tr < t) diff[i + dems[u].tr];
+                demj++;
+                break;
+            }
+            s.insert({dems[u].sc, u});
+            demj++;
+        }
+    }
+    while(!s.empty() and res.size() < t) {
+        res.pb((*s.begin()).second);
+        s.erase(s.begin());
+    }
     // random_shuffle(all(ans));
-    fo(i,min(d, t) ) cout << ans[i] << ln;
+    fo(i, res.size() ) cout << res[i] << ln;
 }
 int main(){   
 
