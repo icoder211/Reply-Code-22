@@ -76,6 +76,11 @@ struct dem {
 ll s, smx, t, d;
 struct dem dems[N];
 vector<int> ans;
+bool cmpdems(int &i, int &j) {
+    return dems[i].sr - dems[i].sc > dems[j].sr - dems[j].sc;
+    // return d1.sr - d1.sc > d2.sr - d2.sc;
+}
+
 void go1() {
     cin >> s >> smx >> t >> d;
     ans.assign(d,-1);
@@ -95,7 +100,8 @@ void go1() {
     }
 
     fo(i,d) ans[i] = i;
-    random_shuffle(all(ans));
+    sort(all(ans), cmpdems);
+    // random_shuffle(all(ans));
     fo(i,min(d, t) ) cout << ans[i] << ln;
 }
 int main(){   
