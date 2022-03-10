@@ -1,4 +1,4 @@
-
+g++ b.cpp -o a.out
 ./a.out < 00.txt > a0.txt
 echo 0 done
 ./a.out < 01.txt > a1.txt

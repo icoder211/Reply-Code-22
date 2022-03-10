@@ -76,8 +76,11 @@ struct dem {
 ll s, smx, t, d;
 struct dem dems[N];
 vector<int> ans;
+double psum[N];
+
 bool cmpdems(int &i, int &j) {
-    return dems[i].sr - dems[i].sc > dems[j].sr - dems[j].sc;
+    // return dems[i].sr - dems[i].sc > dems[j].sr - dems[j].sc;
+    return 100*(dems[i].sr - dems[i].sc) + psum[i]  > 100*(dems[j].sr - dems[j].sc) + psum[j] ;
     // return d1.sr - d1.sc > d2.sr - d2.sc;
 }
 
@@ -89,6 +92,7 @@ void go1() {
         vector<ll> a(na);
         fo(j, na) {
             cin >> a[j];
+            psum[i]+=a[j];
         }
         struct dem dm;
         dm.a = a;

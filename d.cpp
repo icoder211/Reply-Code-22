@@ -105,22 +105,87 @@ void go1() {
         dm.sr = sr;
         dems[i] = dm;
     }
+    priority_queue<pair<int, int> > st, na;
+    fo(i, d) {
+        if(dems[i].sc <= 10 and dems[i].sr >= 15 + dems[i].sc and dems[i].tr <= 10) {
+            st.push({dems[i].sr, i});
+        }
+    }
+    fo(i, d) {
+        if(dems[i].sc == 7 and psum[i] > 4800) {
+            // cout << dems[i].sc << " " << psum[i] << ln;
+            // ans += psum[i];
+            na.push({psum[i], i});
+        }
+    }
+    vector<int> res;
+    ll scur = s;
+    vector<int> diff(1001, 0);
+    int day = 0; // = res.size()
+    // while(res.size() <= 1000) {
+    //     while(scur < 990) {
+    //         auto u = st.top();
+    //         st.pop();
+    //         res.pb(u.second);
+    //         scur += u.first;
+    //     }
+    //     while(scur > 100) {
+    //         auto u = na.top();
+    //         na.pop();
+    //         scur -= 10;
 
-    fo(i,d) ans[i] = i;
-    sort(all(ans), cmpdems);
-    // random_shuffle(all(ans));
-    fo(i,min(d, t) ) cout << ans[i] << ln;
+    //     }
+    // }
+    fo(i, 60) {
+        s += diff[day];
+        auto u = st.top();
+        res.pb(u.second);
+        st.pop();
+        diff[day + 10] += u.first;
+        scur -= 10;
+        day++;
+    }
+    while(scur > 100) {
+        s += diff[day];
+        auto u = na.top();
+        res.pb(u.second);
+        na.pop();
+        diff[day + dems[u.second].tr] += dems[u.second].sr;
+        scur -= dems[u.second].sc;
+        day++;
+    }
+    fo(i, 60) {
+        s += diff[day];
+        auto u = st.top();
+        res.pb(u.second);
+        st.pop();
+        diff[day + 10] += u.first;
+        scur -= 10;
+        day++;
+    }
+    while(res.size() <= 1000 and scur > 0) {
+        s += diff[day];
+        auto u = na.top();
+        res.pb(u.second);
+        na.pop();
+        diff[day + dems[u.second].tr] += dems[u.second].sr;
+        scur -= dems[u.second].sc;
+        day++;
+    }
+    fo(i,res.size()) cout << res[i] << ln;
+    cerr << scur << ln;
+
 }
 int main(){   
 
     Nos;
     // freopen("00.txt", "r", stdin);
     // freopen("b_dream.txt", "r", stdin);
-    // freopen("03.txt", "r", stdin);
+    freopen("03.txt", "r", stdin);
     // freopen("d_maelstrom.txt", "r", stdin);
     // freopen("e_igloos.txt", "r", stdin);
     // freopen("f_glitch.txt", "r", stdin);
-    // freopen("out.txt", "w", stdout);
+    freopen("out.txt", "w", stdout);
 
     // cout << fixed << setprecision(25);
     int t=1;

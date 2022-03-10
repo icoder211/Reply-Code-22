@@ -106,21 +106,31 @@ void go1() {
         dems[i] = dm;
     }
 
-    fo(i,d) ans[i] = i;
-    sort(all(ans), cmpdems);
-    // random_shuffle(all(ans));
-    fo(i,min(d, t) ) cout << ans[i] << ln;
+    ll ans = 0;
+    fo(i, d) {
+        if(dems[i].sc == 7 and psum[i] > 4800 and dems[i].tr <= 50) {
+            cout << dems[i].sc << " " << psum[i] << " " << dems[i].sr << " " << dems[i].tr << ln;
+            ans += psum[i];
+        }
+    }
+    cout << "#################\n";
+    cout << ans << ln;
+    // fo(i,d) {
+    //     if(dems[i].sc <= 10 and dems[i].sr >= 15 + dems[i].sc and dems[i].tr <= 10) {
+    //         cout << dems[i].sc << " " << dems[i].sr << " " <<dems[i].tr << ln;
+    //     }
+    // }
 }
 int main(){   
 
     Nos;
     // freopen("00.txt", "r", stdin);
     // freopen("b_dream.txt", "r", stdin);
-    // freopen("03.txt", "r", stdin);
+    freopen("03.txt", "r", stdin);
     // freopen("d_maelstrom.txt", "r", stdin);
     // freopen("e_igloos.txt", "r", stdin);
     // freopen("f_glitch.txt", "r", stdin);
-    // freopen("out.txt", "w", stdout);
+    freopen("cout.txt", "w", stdout);
 
     // cout << fixed << setprecision(25);
     int t=1;
