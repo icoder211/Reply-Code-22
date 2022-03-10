@@ -1,4 +1,4 @@
-g++ a.cpp -o a.out
+g++ b.cpp -o a.out
 ./a.out < 00.txt > 0
 echo 0 done
 ./a.out < 01.txt > 1
