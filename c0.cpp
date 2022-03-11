@@ -115,11 +115,11 @@ void go1() {
     }
     cout << "#################\n";
     cout << ans << ln;
-    // fo(i,d) {
-    //     if(dems[i].sc <= 10 and dems[i].sr >= 15 + dems[i].sc and dems[i].tr <= 10) {
-    //         cout << dems[i].sc << " " << dems[i].sr << " " <<dems[i].tr << ln;
-    //     }
-    // }
+    fo(i,d) {
+        if(dems[i].sc <= 10 and dems[i].sr >= 15 + dems[i].sc and dems[i].tr <= 10) {
+            cout << dems[i].sc << " " << dems[i].sr << " " <<dems[i].tr << ln;
+        }
+    }
 }
 int main(){   
 

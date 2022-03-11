@@ -1,4 +1,35 @@
-#include<bits/stdc++.h>
+#include <algorithm>
+#include <bitset>
+#include <complex>
+#include <deque>
+#include <exception>
+#include <fstream>
+#include <functional>
+#include <iomanip>
+#include <ios>
+#include <iosfwd>
+#include <iostream>
+#include <istream>
+#include <iterator>
+#include <limits>
+#include <list>
+#include <locale>
+#include <map>
+#include <memory>
+#include <new>
+#include <numeric>
+#include <ostream>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
+#include <streambuf>
+#include <string>
+#include <typeinfo>
+#include <utility>
+#include <valarray>
+#include <vector>
 #pragma GCC optimize("Ofast")
 #pragma GCC target("avx,avx2,fma")
 using namespace std;
@@ -105,33 +136,106 @@ void go1() {
         dm.sr = sr;
         dems[i] = dm;
     }
-
-    ll ans = 0;
+    priority_queue<pair<int, int> > st;
+    priority_queue<pair<pair<int, int>, int> > na;
     fo(i, d) {
-        if(dems[i].sc <= 50 and psum[i] > 800 and dems[i].tr <= 100) {
-            cout << dems[i].sc << " " << psum[i] << " " << dems[i].sr << " " << dems[i].tr << ln;
-            ans += psum[i];
+        if(dems[i].sc < 6 and dems[i].sr >= 25 and dems[i].tr <= 100) {
+        // if(dems[i].sc <= 10 and dems[i].sr >= 15 + dems[i].sc and dems[i].tr <= 10) {
+            st.push({-dems[i].sc, i});
         }
     }
-    cerr << "#################\n";
-    cerr << "ans " << ans << ln;
-    // fo(i,d) {
-    //     if(dems[i].sc < 6 and dems[i].sr >= 25 and dems[i].tr <= 100) {
-    //         cout << dems[i].sc << " " << dems[i].sr << " " <<dems[i].tr << ln;
-    //     }
+    fo(i, d) {
+        if(dems[i].sc <= 50 and psum[i] > 800 and dems[i].tr <= 100) {
+        // if(dems[i].sc == 7 and psum[i] > 4800) {
+            // cout << dems[i].sc << " " << psum[i] << ln;
+            // ans += psum[i];
+            na.push({{psum[i], -dems[i].tr}, i});
+        }
+    }
+    cerr << st.size() << " " << na.size() << ln;
+    vector<int> res;
+    ll scur = s;
+    vector<int> diff(100000, 0);
+    int day = 0; // = res.size()
+    fo(i, 56) {
+        scur += diff[day];
+        auto u = st.top();
+        res.pb(u.second);
+        st.pop();
+        diff[day + dems[u.second].tr] += u.first;
+        scur -= dems[u.second].sc;
+        day++;
+    }
+    cerr << scur << ln;
+    fo(i, 86) {
+        fo(j ,10) {
+            scur += diff[day];
+            auto u = na.top();
+            res.pb(u.second);
+            na.pop();
+            diff[day + dems[u.second].tr] += dems[u.second].sr;
+            scur -= dems[u.second].sc;
+            day++;
+        }
+        fo(j, 1) {
+            scur += diff[day];
+            auto u = st.top();
+            res.pb(u.second);
+            st.pop();
+            diff[day + dems[u.second].tr] += u.first;
+            scur -= dems[u.second].sc;
+            day++;
+        }
+    }
+    cerr << scur << ln;
+    cerr << res.size() << ln;
+    // cerr << scur << ln;
+    // while(scur > 100) {
+    //     scur += diff[day];
+    //     auto u = na.top();
+    //     res.pb(u.second);
+    //     na.pop();
+    //     diff[day + dems[u.second].tr] += dems[u.second].sr;
+    //     scur -= dems[u.second].sc;
+    //     day++;
     // }
+    // cerr << scur << ln;
+    // fo(i, 80) {
+    //     scur += diff[day];
+    //     auto u = st.top();
+    //     res.pb(u.second);
+    //     st.pop();
+    //     diff[day + 10] += u.first;
+    //     scur -= 10;
+    //     day++;
+    // }
+    // cerr << "here" << ln;
+    // cerr << day << ln;
+    // cerr << scur << ln;
+    // while(res.size() < 1000 and scur > 0) {
+    //     scur += diff[day];
+    //     auto u = na.top();
+    //     res.pb(u.second);
+    //     na.pop();
+    //     diff[day + dems[u.second].tr] += dems[u.second].sr;
+    //     scur -= dems[u.second].sc;
+    //     day++;
+    // }
+    fo(i,min(10000ll, (ll)res.size())) cout << res[i] << ln;
+    // cerr << scur << ln;
+    // cerr << res.size() << ln;
+
 }
 int main(){   
 
     Nos;
     // freopen("00.txt", "r", stdin);
     // freopen("b_dream.txt", "r", stdin);
-    // freopen("03.txt", "r", stdin);
     freopen("05.txt", "r", stdin);
     // freopen("d_maelstrom.txt", "r", stdin);
     // freopen("e_igloos.txt", "r", stdin);
     // freopen("f_glitch.txt", "r", stdin);
-    freopen("eout.txt", "w", stdout);
+    freopen("out.txt", "w", stdout);
 
     // cout << fixed << setprecision(25);
     int t=1;

@@ -169,7 +169,7 @@ void go1() {
 
     //     }
     // }
-    fo(i, 56) {
+    fo(i, 37) {
         scur += diff[day];
         auto u = st.top();
         res.pb(u.second);
@@ -179,8 +179,8 @@ void go1() {
         day++;
     }
     cerr << scur << ln;
-    fo(i, 86) {
-        fo(j ,10) {
+    fo(i, 109) {
+        fo(j ,8) {
             scur += diff[day];
             auto u = na.top();
             res.pb(u.second);
